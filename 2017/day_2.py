@@ -4,6 +4,12 @@ test1 = (
 2 4 6 8""", 18
 )
 
+test2 = (
+    """5 9 2 8
+9 4 7 3
+3 8 6 5""", 9
+)
+
 
 DATA = """414	382	1515	319	83	1327	116	391	101	749	1388	1046	1427	105	1341	1590
 960	930	192	147	932	621	1139	198	865	820	597	165	232	417	19	183
@@ -31,11 +37,32 @@ def solution(input_):
     return tot
 
 
+def solution2(input_):
+    tot = 0
+    for row in input_.split('\n'):
+        line = list(map(int, row.split()))
+        found = False
+        for i, n0 in enumerate(line[:-1], 1):
+            for n1 in line[i:]:
+                big, small = (n0, n1) if n0 > n1 else (n1, n0)
+                div, mod = divmod(big, small)
+                if mod == 0:
+                    tot += div
+                    found = True
+                    break
+            if found is True:
+                break
+    return tot
+
+
 def run_tests():
     input_, output = test1
+    input2, output2 = test2
     assert solution(input_) == output
+    assert solution2(input2) == output2, solution2(input2)
 
 
 if __name__ == '__main__':
     run_tests()
     print(solution(DATA))
+    print(solution2(DATA))
